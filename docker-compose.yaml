@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  deno-example:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "1337:8080"
+    # volumes:
+    #   # setup file or folder
+    #   - /mnt/storage/digimon-dev:/app/assets
+    network_mode: bridge
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

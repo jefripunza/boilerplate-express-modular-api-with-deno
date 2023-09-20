@@ -1,0 +1,8 @@
+.vscode
+assets
+tests
+
+.dockerignore
+compose.sh
+docker-compose.yaml
+Dockerfile
