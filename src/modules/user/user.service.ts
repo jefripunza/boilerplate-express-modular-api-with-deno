@@ -34,6 +34,31 @@ class UserService {
       return DTO.internalServerErrorResponse("user.init", error);
     }
   }
+
+  async update(id: string, name: string, profile_image: string) {
+    try {
+      const updated: any = {};
+      if (name) {
+        updated["name"] = name;
+      }
+      if (profile_image) {
+        updated["profile_image"] = profile_image;
+      }
+
+      const { matchedCount, modifiedCount } = await UserModel.updateOne(
+        {
+          _id: id,
+        },
+        updated
+      );
+
+      return DTO.successResponse({
+        data: { matchedCount, modifiedCount },
+      });
+    } catch (error) {
+      return DTO.internalServerErrorResponse("user.update", error);
+    }
+  }
 }
 
 export default new UserService();

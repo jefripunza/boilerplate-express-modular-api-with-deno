@@ -8,7 +8,7 @@ import {
   authSubmitResetPasswordSchema,
 } from "./auth.schema.ts";
 
-import token_validation from "../../middlewares/token_validation.ts";
+import tokenValidation from "../../middlewares/token_validation.ts";
 import { Role } from "../user-role/user-role.model.ts";
 
 import * as Handler from "./auth.handler.ts";
@@ -31,21 +31,21 @@ router.post(
 );
 router.delete(
   "/api/auth/v1/logout",
-  token_validation(Role.All),
+  tokenValidation(Role.All),
   Handler.logout
 );
 
 // Token...
 router.get(
   "/api/auth/v1/token-validation",
-  token_validation(Role.All),
+  tokenValidation(Role.All),
   Handler.tokenValidation
 );
 
 // Password...
 router.post(
   "/api/auth/v1/reset-password",
-  token_validation(Role.All),
+  tokenValidation(Role.All),
   zodValidate({
     body: authRequestResetPasswordSchema["body"],
   }),
@@ -53,7 +53,7 @@ router.post(
 );
 router.put(
   "/api/auth/v1/reset-password",
-  token_validation(Role.All),
+  tokenValidation(Role.All),
   zodValidate({
     body: authSubmitResetPasswordSchema["body"],
   }),

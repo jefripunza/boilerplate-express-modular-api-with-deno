@@ -17,4 +17,5 @@ const RevokeTokenSchema = new Schema(
 );
 
 export type RevokeToken = InferSchemaType<typeof RevokeTokenSchema> & Document;
-export default model<RevokeToken>("RevokeToken", RevokeTokenSchema);
+const RevokeTokenModel = model<RevokeToken>("RevokeToken", RevokeTokenSchema);
+export default RevokeTokenModel;

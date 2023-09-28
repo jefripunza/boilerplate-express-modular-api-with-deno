@@ -18,3 +18,16 @@ export const init = async (req: Request, res: Response) => {
 
   return res.status(response.statusCode).send(response);
 };
+
+export const update = async (req: Request, res: Response) => {
+  /**
+    #swagger.tags = ['User']
+  */
+
+  const { id }: ITokenContent = res.locals.user;
+  const { name, profile_image } = req.body;
+
+  const response = await Service.update(id, name, profile_image);
+
+  return res.status(response.statusCode).send(response);
+};
