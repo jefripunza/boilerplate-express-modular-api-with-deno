@@ -1,3 +1,9 @@
+import { Mongo, Server } from "./src/env.ts";
 import { app } from "./src/apps/express.ts";
+import { connectDatabase } from "./src/apps/mongoose.ts";
 
-app.listen(8080, () => console.log("Listen at http://localhost:8080 ..."));
+await connectDatabase(Mongo.url);
+app.listen(
+  Server.PORT,
+  () => console.log(`✅ Listen at http://localhost:${Server.PORT}/swagger ...`),
+);

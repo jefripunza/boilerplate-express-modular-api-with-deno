@@ -3,6 +3,10 @@ assets
 tests
 
 .dockerignore
+.gitignore
 compose.sh
+deno.json
+deno.lock
 docker-compose.yaml
 Dockerfile
+README.md

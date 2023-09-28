@@ -1,5 +1,7 @@
 import * as path from "https://deno.land/std@0.202.0/path/mod.ts";
 
+import * as crypto from "https://deno.land/std@0.177.0/node/crypto.ts";
+
 // ================================================================ //
 
 import axios from "npm:axios@1.4.0";
@@ -36,5 +38,15 @@ import nodeCron from "npm:node-cron@3.0.2";
 
 import swaggerAutogen from "npm:swagger-autogen@2.23.1";
 
-// @deno-types="npm:@types/swagger-ui-express@4.1.3"
-import swaggerUiExpress from "npm:swagger-ui-express@4.6.3";
+import SwaggerUIBundle from "npm:swagger-ui-dist@5.7.2";
+
+// =========================================================
+
+import mongoose from "npm:mongoose@^6.7";
+
+// @deno-types="npm:@types/jsonwebtoken@9.0.2"
+import jwt from "npm:jsonwebtoken@9.0.0";
+
+import uuid from "npm:uuid@9.0.0";
+
+import { z } from "npm:zod@3.22.1";

@@ -1,6 +1,8 @@
-import { Knex as KnexInterface } from "knex";
+// deno-lint-ignore-file no-namespace
 
-import { migrations_dir } from "@/paths";
+import { Knex as KnexInterface } from "npm:knex@2.4.2";
+
+import { migrations_dir } from "./path.ts";
 import { Database, Server } from "./env.ts";
 
 export namespace Knex {

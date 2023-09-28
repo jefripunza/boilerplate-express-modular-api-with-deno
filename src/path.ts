@@ -32,11 +32,16 @@ const directories = [
   middlewares_dir,
   repositories_dir,
   tests_dir,
+
+  modules_dir,
   migrations_dir,
   seeds_dir,
+
   user_dir,
   product_dir,
   logo_dir,
+
+  strict_dir,
 ];
 
 for (const dir of directories) {
@@ -44,10 +49,16 @@ for (const dir of directories) {
     if (!Deno.statSync(dir).isDirectory) {
       Deno.mkdirSync(dir, { recursive: true });
     }
-  } catch (error) {
+  } catch (_error) {
     Deno.mkdirSync(dir, { recursive: true });
   }
 }
 
 // File
-export const swagger_json_file = `${project_root}/swagger.json`;
+export const swagger_json_file = path.join(project_root, "swagger.json");
+export const swagger_html_file = path.join(
+  project_root,
+  "assets",
+  "public",
+  "swagger.html",
+);

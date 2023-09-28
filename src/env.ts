@@ -1,27 +1,29 @@
 // deno-lint-ignore-file no-namespace
 
+import { fileExist } from "./helpers/fs.ts";
+
 // ==================================================================== //
 // ==================================================================== //
 //-> Read .env
 
-const data = await Deno.readTextFile(".env");
-for (const line of data.split("\n")) {
-  const [key, value] = line.split("=");
-
-  if (key && value) {
-    Deno.env.set(key.trim(), value.trim());
+const isEnvExist = await fileExist(".env");
+if (isEnvExist) {
+  const data = await Deno.readTextFile(".env");
+  for (const line of data.split("\n")) {
+    const [key, value] = line.split("=");
+    if (key && value) Deno.env.set(key.trim(), value.trim());
   }
 }
 
 // ==================================================================== //
 // ==================================================================== //
 
-export const NODE_ENV = Deno.env.get("NODE_ENV") || "local";
+export const ENV = Deno.env.get("ENV") || "local";
 
 export namespace Server {
   export const SECRET_KEY = Deno.env.get("SECRET_KEY") || "high-secret-key";
-  export const isProduction = String(NODE_ENV).includes("production");
-  export const isDevelopment = String(NODE_ENV).includes("development");
+  export const isProduction = String(ENV).includes("production");
+  export const isDevelopment = String(ENV).includes("development");
   export const isLocal = ![isDevelopment, isProduction].includes(true);
   export const PORT = Number(Deno.env.get("PORT") || "8080");
   export const TZ = Deno.env.get("TZ") || "Asia/Jakarta";
@@ -30,8 +32,8 @@ export namespace Server {
 export namespace Swagger {
   export const APP_NAME = Deno.env.get("APP_NAME") || "app name";
   export const APP_VERSION = Deno.env.get("APP_VERSION") || "1.0.0";
-  export const APP_DESCRIPTION =
-    Deno.env.get("APP_DESCRIPTION") || "please complete information in .env";
+  export const APP_DESCRIPTION = Deno.env.get("APP_DESCRIPTION") ||
+    "please complete information in .env";
   export const APP_SCHEMES = Deno.env.get("APP_SCHEMES")
     ? String(Deno.env.get("APP_SCHEMES")).toLowerCase().split("|")
     : ["http", "https"];
@@ -50,13 +52,17 @@ export namespace Database {
   export const poolMax = Number(Deno.env.get("DB_POOL_MAX") || 10);
 }
 
+export namespace Mongo {
+  export const url = Deno.env.get("MONGO_URL") || "mongodb://localhost:27017";
+}
+
 export const OTP_EXPIRED_MINUTE = Number(
-  Deno.env.get("OTP_EXPIRED_MINUTE") || 3
+  Deno.env.get("OTP_EXPIRED_MINUTE") || 3,
 );
 
 export namespace Jwt {
-  export const SECRET_TOKEN =
-    Deno.env.get("JWT_SECRET_TOKEN") || "very-secret-token";
+  export const SECRET_TOKEN = Deno.env.get("JWT_SECRET_TOKEN") ||
+    "very-secret-token";
   export const EXPIRED_TOKEN = Deno.env.get("JWT_EXPIRED_TOKEN") || "7d";
 }
 

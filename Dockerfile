@@ -1,16 +1,22 @@
-FROM denoland/deno:alpine
-
-# The port that your application listens to.
+FROM denoland/deno:alpine AS builder
 
 WORKDIR /app
 COPY . .
 
-# Prefer not to run as root.
-USER deno
+RUN deno compile --allow-read --allow-write --allow-net --allow-env --allow-sys --output run index.ts
 
-COPY deps.ts .
-RUN deno cache deps.ts
-ADD . .
+# ===================================================================================================== #
+# ===================================================================================================== #
+# ===================================================================================================== #
+
+FROM ubuntu
+
+WORKDIR /app
+COPY --from=builder /app/run .
+COPY .env .env
+COPY assets assets
+
+RUN sed -i 's/localhost/host.docker.internal/g' .env
 
 EXPOSE 1337
-CMD ["run", "--allow-read", "--allow-env", "--allow-net", "index.ts"]
+CMD ["./run"]

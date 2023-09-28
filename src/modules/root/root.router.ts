@@ -4,6 +4,10 @@ import { Router } from "npm:express@4.18.2";
 const router = Router();
 
 router.get("/", (_, res) => {
+  /**
+    #swagger.tags = ['Root']
+  */
+
   return res.send("halo dek...");
 });
 

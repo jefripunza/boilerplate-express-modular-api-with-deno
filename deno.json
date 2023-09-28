@@ -1,0 +1,8 @@
+{
+  "tasks": {
+    "install": "deno cache deps.ts",
+    "seed": "deno run --allow-read --allow-net --allow-env --allow-sys src/models/seed.ts",
+    "dev": "deno run --watch -A index.ts",
+    "compile": "deno compile --allow-write --allow-read --allow-net --allow-env --allow-sys --output run index.ts"
+  }
+}
