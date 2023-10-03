@@ -15,7 +15,6 @@ FROM ubuntu
 WORKDIR /app
 COPY --from=builder /app/run .
 COPY .env .env
-COPY assets assets
 
 RUN sed -i 's/localhost/host.docker.internal/g' .env
 
