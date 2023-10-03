@@ -22,10 +22,13 @@ deno upgrade
 ## Prepare Project...
 
 install first : deno task install
+
 run seed (MongoDB) : deno task seed
 
 ## Run Development...
 
 run dev : deno task dev
+
 run unit test (run app first on other terminal) : deno task test
+
 run compile : deno task compile
