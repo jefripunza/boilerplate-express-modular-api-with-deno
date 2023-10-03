@@ -42,6 +42,9 @@ const UserModel = model<User>("User", UserSchema);
 export default UserModel;
 
 export async function up() {
+  // clear all data...
+  await UserModel.deleteMany({});
+
   const role = await UserRoleModel.findOne({
     name: Role.SuperAdmin,
   });

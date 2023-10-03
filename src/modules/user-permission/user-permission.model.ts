@@ -4,6 +4,12 @@ import mongoose, {
   model as createModel,
   Schema,
 } from "npm:mongoose@^6.7";
+import { insertDocument } from "../../apps/mongoose.ts";
+
+import PermissionModel, {
+  Permissions,
+} from "../permission/permission.model.ts";
+import UserRoleModel, { Role } from "../user-role/user-role.model.ts";
 
 const UserPermissionSchema = new Schema(
   {
@@ -15,6 +21,10 @@ const UserPermissionSchema = new Schema(
     permission: {
       type: mongoose.Schema.Types.String,
       ref: "Permission",
+      required: true,
+    },
+    canAccess: {
+      type: mongoose.Schema.Types.Boolean,
       required: true,
     },
   },
@@ -31,3 +41,28 @@ const UserPermissionModel = createModel<UserPermission>(
   UserPermissionSchema
 );
 export default UserPermissionModel;
+
+export async function up() {
+  // clear all data...
+  await UserPermissionModel.deleteMany({});
+
+  const permissions = await PermissionModel.find({});
+  const roles = await UserRoleModel.find({});
+
+  for (const permission of permissions) {
+    for (const role of roles) {
+      await insertDocument(
+        UserPermissionModel,
+        {
+          permission: permission._id,
+          role: role._id,
+        },
+        {
+          permission: permission._id,
+          role: role._id,
+          canAccess: true,
+        }
+      );
+    }
+  }
+}

@@ -53,6 +53,9 @@ const PermissionModel = createModel<Permission>("Permission", PermissionSchema);
 export default PermissionModel;
 
 export async function up() {
+  // clear all data...
+  await PermissionModel.deleteMany({});
+
   const roles = Object.values(Permissions).map((key) => {
     const group = String(key)
       .replace("CREATE_", "")

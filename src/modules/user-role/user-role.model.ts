@@ -40,24 +40,15 @@ const UserRoleModel = createModel<UserRole>("UserRole", UserRoleSchema);
 export default UserRoleModel;
 
 export async function up() {
-  const roles = [
-    {
-      name: Role.SuperAdmin,
+  // clear all data...
+  await UserRoleModel.deleteMany({});
+
+  const roles = Object.values(Role)
+    .filter((role) => role != Role.All)
+    .map((name) => ({
+      name,
       isActive: true,
-    },
-    {
-      name: Role.Admin,
-      isActive: true,
-    },
-    {
-      name: Role.Merchant,
-      isActive: true,
-    },
-    {
-      name: Role.Customer,
-      isActive: true,
-    },
-  ];
+    }));
 
   for (const role of roles) {
     await insertDocument(

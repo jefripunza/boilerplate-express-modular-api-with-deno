@@ -27,5 +27,5 @@ run seed (MongoDB) : deno task seed
 ## Run Development...
 
 run dev : deno task dev
-run unit test : deno task test
+run unit test (run app first on other terminal) : deno task test
 run compile : deno task compile
