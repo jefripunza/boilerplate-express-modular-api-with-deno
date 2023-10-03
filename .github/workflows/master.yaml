@@ -53,10 +53,9 @@ jobs:
       # ----------------------------------------------------------------------
       # ----------------------------------------------------------------------
 
-      # - name: Manual Replace
-      #   run: |
-      #     sed -i 's#DATABASE_URL=#DATABASE_URL=${{ secrets.ENV_DATABASE_URL }}#g' .env
-      #     sed -i 's#DATABASE_NAME=#DATABASE_NAME=${{ secrets.ENV_DATABASE_NAME }}#g' .env
+      - name: Manual Replace
+        run: |
+          sed -i 's#MONGO_URL=#MONGO_URL=${{ secrets.ENV_MONGO_URL }}#g' .env
 
       # ----------------------------------------------------------------------
       # ----------------------------------------------------------------------
