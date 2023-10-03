@@ -15,7 +15,7 @@ import * as jwt from "../../utils/jsonwebtoken.ts";
 import * as encryption from "../../utils/encryption.ts";
 import { user_testing } from "../../config.ts";
 
-class BrandService {
+class AuthService {
   async register(
     username: string,
     password: string,
@@ -226,4 +226,4 @@ class BrandService {
   }
 }
 
-export default new BrandService();
+export default new AuthService();

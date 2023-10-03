@@ -11,6 +11,11 @@ export enum Permissions {
   updateUser = "UPDATE_USER",
   deleteUser = "DELETE_USER",
 
+  createUserAddress = "CREATE_USER_ADDRESS",
+  viewUserAddress = "VIEW_USER_ADDRESS",
+  updateUserAddress = "UPDATE_USER_ADDRESS",
+  deleteUserAddress = "DELETE_USER_ADDRESS",
+
   createNotification = "CREATE_NOTIFICATION",
   viewNotification = "VIEW_NOTIFICATION",
   updateNotification = "UPDATE_NOTIFICATION",

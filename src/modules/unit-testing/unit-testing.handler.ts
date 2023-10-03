@@ -12,5 +12,5 @@ export const clearWithUsername = async (req: Request, res: Response) => {
 
   const response = await Service.clearWithUsername(username);
 
-  return res.status(response.statusCode).send(response);
+  return res.status(response.statusCode).json(response);
 };

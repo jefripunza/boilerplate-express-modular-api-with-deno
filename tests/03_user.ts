@@ -4,18 +4,13 @@ import { StatusCodes } from "npm:http-status-codes@2.2.0";
 import axios from "npm:axios@1.4.0";
 import { getUrlDev } from "../src/utils/unit_test.ts";
 
-import { user_testing } from "../src/config.ts";
-import {
-  isArrayOfString,
-  isString,
-  isNumber,
-} from "../src/helpers/validation.ts";
+import { isString } from "../src/helpers/validation.ts";
 
 import { Role } from "../src/modules/user-role/user-role.model.ts";
 
 const token = await Deno.readTextFile("tests/token.txt");
 
-// ================================================================================================================ //
+// ======================================================================== //
 // -> User Update
 
 Deno.test("User, Update (Negative) : wrong body", async () => {
@@ -69,8 +64,8 @@ Deno.test("User, Update (Positive) : success update user", async () => {
   }
 });
 
-// ================================================================================================================ //
-// -> Reset Password
+// ======================================================================== //
+// -> User Init
 
 Deno.test("User, Init (Positive) : get data user", async () => {
   try {

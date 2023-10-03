@@ -15,7 +15,6 @@ import UserModel from "../modules/user/user.model.ts";
 export default (...roles: Role[]) =>
   async (req: any, res: Response, next: NextFunction) => {
     let token = req.headers.authorization || req.cookies.token;
-
     if (!token) {
       return res.status(StatusCodes.FORBIDDEN).json(
         DTO.errorResponse({

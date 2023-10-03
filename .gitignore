@@ -3,6 +3,7 @@
 /assets/public/doc
 /check
 
+/tests/token.txt
 .env
 deno.lock
 swagger.json

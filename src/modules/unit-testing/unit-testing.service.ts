@@ -2,6 +2,7 @@ import { StatusCodes } from "npm:http-status-codes@2.2.0";
 import * as DTO from "../../dto.ts";
 
 import UserModel from "../user/user.model.ts";
+import UserAddressModel from "../user/user-address.model.ts";
 
 import { user_testing } from "../../config.ts";
 
@@ -14,8 +15,14 @@ class UnitTestingService {
     }
 
     try {
-      // all clearance here...
+      const user = await UserModel.findOne({
+        username,
+      });
 
+      // all clearance here...
+      await UserAddressModel.deleteMany({
+        user: user?.id,
+      });
       await UserModel.deleteOne({
         username,
       });

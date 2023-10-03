@@ -14,19 +14,6 @@ import {
 const token_file_path = "tests/token.txt";
 let token: any = null;
 
-const clearUserTesting = async () => {
-  await axios.get(
-    `${getUrlDev}/api/unit-testing/v1/clear-with-username/${user_testing.username}`
-  );
-  await Deno.remove(token_file_path);
-  return true;
-};
-
-Deno.test("clear user testing in collection on start testing", async () => {
-  const isUserTestingClear = await clearUserTesting();
-  assertEquals(isUserTestingClear, true);
-});
-
 // ================================================================================================================ //
 // -> Register New User
 

@@ -1,7 +1,11 @@
 // @deno-types="npm:@types/express@4"
 import { Router } from "npm:express@4.18.2";
 import zodValidate from "../../middlewares/zod_validation.ts";
-import { userUpdateSchema } from "./user.schema.ts";
+import {
+  userUpdateSchema,
+  userAddressCreateSchema,
+  userAddressUpdateSchema,
+} from "./user.schema.ts";
 
 import tokenValidation from "../../middlewares/token_validation.ts";
 import hasPermission from "../../middlewares/has_permission.ts";
@@ -25,9 +29,53 @@ router.put(
   zodValidate({
     body: userUpdateSchema["body"],
   }),
-  Handler.update
+  Handler.updateUser
 );
 
 // Address
+
+router.post(
+  "/api/user/v1/address",
+  tokenValidation(Role.Merchant, Role.Customer),
+  hasPermission(Permissions.createUserAddress),
+  zodValidate({
+    body: userAddressCreateSchema["body"],
+  }),
+  Handler.createUserAddress
+);
+router.get(
+  "/api/user/v1/address",
+  tokenValidation(Role.Merchant, Role.Customer),
+  hasPermission(Permissions.viewUserAddress),
+  Handler.listUserAddress
+);
+router.put(
+  "/api/user/v1/address/:addressId",
+  tokenValidation(Role.Merchant, Role.Customer),
+  hasPermission(Permissions.viewUserAddress),
+  zodValidate({
+    params: userAddressUpdateSchema["params"],
+    body: userAddressUpdateSchema["body"],
+  }),
+  Handler.updateUserAddress
+);
+router.patch(
+  "/api/user/v1/address-set-default/:addressId",
+  tokenValidation(Role.Merchant, Role.Customer),
+  hasPermission(Permissions.viewUserAddress),
+  zodValidate({
+    params: userAddressUpdateSchema["params"],
+  }),
+  Handler.setDefaultUserAddress
+);
+router.delete(
+  "/api/user/v1/address/:addressId",
+  tokenValidation(Role.Merchant, Role.Customer),
+  hasPermission(Permissions.viewUserAddress),
+  zodValidate({
+    params: userAddressUpdateSchema["params"],
+  }),
+  Handler.deleteUserAddress
+);
 
 export default router;
