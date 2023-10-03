@@ -6,6 +6,7 @@ import Service from "./unit-testing.service.ts";
 export const clearWithUsername = async (req: Request, res: Response) => {
   /**
     #swagger.tags = ['Unit Testing']
+    #swagger.deprecated = true
   */
 
   const { username } = req.params;
