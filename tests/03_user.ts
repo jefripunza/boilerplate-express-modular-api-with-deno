@@ -8,7 +8,8 @@ import { isString } from "../src/helpers/validation.ts";
 
 import { Role } from "../src/modules/user-role/user-role.model.ts";
 
-const token = await Deno.readTextFile("tests/token.txt");
+const token_admin = await Deno.readTextFile("tests/token-admin.txt");
+const token_customer = await Deno.readTextFile("tests/token-customer.txt");
 
 // ======================================================================== //
 // -> User Update
@@ -23,7 +24,7 @@ Deno.test("User, Update (Negative) : wrong body", async () => {
           profile_image: 123,
         },
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token_customer}` },
         }
       )
       .then((res) => res.data);
@@ -46,7 +47,7 @@ Deno.test("User, Update (Positive) : success update user", async () => {
           profile_image: "success.jpg",
         },
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token_customer}` },
         }
       )
       .then((res) => res.data);
@@ -71,7 +72,7 @@ Deno.test("User, Init (Positive) : get data user", async () => {
   try {
     const result = await axios
       .get(`${getUrlDev}/api/user/v1/init`, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token_customer}` },
       })
       .then((res) => res.data);
     assertEquals(result.statusCode, StatusCodes.OK);

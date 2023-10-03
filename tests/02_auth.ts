@@ -4,14 +4,16 @@ import { StatusCodes } from "npm:http-status-codes@2.2.0";
 import axios from "npm:axios@1.4.0";
 import { getUrlDev } from "../src/utils/unit_test.ts";
 
-import { user_testing } from "../src/config.ts";
+import { user_admin_testing, user_customer_testing } from "../src/config.ts";
 import {
   isArrayOfString,
   isString,
   isNumber,
 } from "../src/helpers/validation.ts";
 
-const token_file_path = "tests/token.txt";
+const token_admin = "tests/token-admin.txt";
+const token_customer = "tests/token-customer.txt";
+
 let token: any = null;
 
 // ================================================================================================================ //
@@ -51,28 +53,50 @@ Deno.test(
   }
 );
 
-Deno.test("Auth, Register New User (Positive) : created", async () => {
-  try {
-    const result = await axios
-      .post(`${getUrlDev}/api/auth/v1/register`, user_testing)
-      .then((res) => res.data);
-    assertEquals(result.statusCode, StatusCodes.CREATED);
-    assertEquals(result.message, "OK");
-    assertEquals(result.success, true);
-    assertEquals(result.data, []);
-  } catch (error) {
-    const { statusCode, message, success, data } = error.response.data;
-    console.log({ statusCode, message, data });
-    assertEquals(statusCode, StatusCodes.CREATED);
+Deno.test(
+  "Auth, Register New User (Positive) : user customer created",
+  async () => {
+    try {
+      const result = await axios
+        .post(`${getUrlDev}/api/auth/v1/register`, user_customer_testing)
+        .then((res) => res.data);
+      assertEquals(result.statusCode, StatusCodes.CREATED);
+      assertEquals(result.message, "OK");
+      assertEquals(result.success, true);
+      assertEquals(result.data, []);
+    } catch (error) {
+      const { statusCode, message, success, data } = error.response.data;
+      console.log({ statusCode, message, data });
+      assertEquals(statusCode, StatusCodes.CREATED);
+    }
   }
-});
+);
+
+Deno.test(
+  "Auth, Register New User (Positive) : user admin created",
+  async () => {
+    try {
+      const result = await axios
+        .post(`${getUrlDev}/api/auth/v1/register`, user_admin_testing)
+        .then((res) => res.data);
+      assertEquals(result.statusCode, StatusCodes.CREATED);
+      assertEquals(result.message, "OK");
+      assertEquals(result.success, true);
+      assertEquals(result.data, []);
+    } catch (error) {
+      const { statusCode, message, success, data } = error.response.data;
+      console.log({ statusCode, message, data });
+      assertEquals(statusCode, StatusCodes.CREATED);
+    }
+  }
+);
 
 Deno.test(
   "Auth, Register New User (Negative) : user is already register",
   async () => {
     try {
       await axios
-        .post(`${getUrlDev}/api/auth/v1/register`, user_testing)
+        .post(`${getUrlDev}/api/auth/v1/register`, user_customer_testing)
         .then((res) => res.data);
     } catch (error) {
       const { statusCode, message, success, data } = error.response.data;
@@ -107,8 +131,8 @@ Deno.test("Auth, Login User (Negative) : wrong username", async () => {
   try {
     await axios
       .post(`${getUrlDev}/api/auth/v1/login`, {
-        username: "user_testing.username",
-        password: user_testing.password,
+        username: "user_customer_testing.username",
+        password: user_customer_testing.password,
       })
       .then((res) => res.data);
   } catch (error) {
@@ -116,7 +140,7 @@ Deno.test("Auth, Login User (Negative) : wrong username", async () => {
     assertEquals(statusCode, StatusCodes.UNPROCESSABLE_ENTITY);
     assertEquals(message, "Validation error");
     assertEquals(success, false);
-    assertEquals(data[0].message, "username max 19 karakter!");
+    assertEquals(data[0].message, "username max 25 karakter!");
   }
 });
 
@@ -124,7 +148,7 @@ Deno.test("Auth, Login User (Negative) : wrong password", async () => {
   try {
     await axios
       .post(`${getUrlDev}/api/auth/v1/login`, {
-        username: user_testing.username,
+        username: user_customer_testing.username,
         password: "test",
       })
       .then((res) => res.data);
@@ -149,12 +173,12 @@ Deno.test("Auth, Login User (Negative) : wrong password", async () => {
   }
 });
 
-Deno.test("Auth, Login User (Positive) : logged", async () => {
+Deno.test("Auth, Login User (Positive) : admin logged", async () => {
   try {
     const result = await axios
       .post(`${getUrlDev}/api/auth/v1/login`, {
-        username: user_testing.username,
-        password: user_testing.password,
+        username: user_admin_testing.username,
+        password: user_admin_testing.password,
       })
       .then((res) => res.data);
     assertEquals(result.statusCode, StatusCodes.OK);
@@ -167,7 +191,33 @@ Deno.test("Auth, Login User (Positive) : logged", async () => {
     assertEquals(isString(newToken), true);
     assertEquals(isString(userId), true);
 
-    await Deno.writeTextFile(token_file_path, newToken);
+    await Deno.writeTextFile(token_admin, newToken);
+  } catch (error) {
+    const { statusCode, message, success, data } = error.response.data;
+    console.log({ statusCode, message, data });
+    assertEquals(statusCode, StatusCodes.OK);
+  }
+});
+
+Deno.test("Auth, Login User (Positive) : customer logged", async () => {
+  try {
+    const result = await axios
+      .post(`${getUrlDev}/api/auth/v1/login`, {
+        username: user_customer_testing.username,
+        password: user_customer_testing.password,
+      })
+      .then((res) => res.data);
+    assertEquals(result.statusCode, StatusCodes.OK);
+    assertEquals(result.message, "OK");
+    assertEquals(result.success, true);
+
+    const { permissions, role, token: newToken, userId } = result.data;
+    assertEquals(isArrayOfString(permissions), true);
+    assertEquals(isString(role), true);
+    assertEquals(isString(newToken), true);
+    assertEquals(isString(userId), true);
+
+    await Deno.writeTextFile(token_customer, newToken);
     token = newToken;
   } catch (error) {
     const { statusCode, message, success, data } = error.response.data;
@@ -289,7 +339,7 @@ Deno.test(
       const result = await axios
         .post(
           `${getUrlDev}/api/auth/v1/reset-password`,
-          { username: user_testing.username },
+          { username: user_customer_testing.username },
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -386,9 +436,9 @@ Deno.test(
           `${getUrlDev}/api/auth/v1/reset-password`,
           {
             ref: "3b95aec7-1a2b-4593-a3c1-642ee8f27d95",
-            password: user_testing.password,
-            newPassword: user_testing.password + "0",
-            rePassword: user_testing.password + "0",
+            password: user_customer_testing.password,
+            newPassword: user_customer_testing.password + "0",
+            rePassword: user_customer_testing.password + "0",
           },
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -413,9 +463,9 @@ Deno.test(
           `${getUrlDev}/api/auth/v1/reset-password`,
           {
             ref: ref_code,
-            password: user_testing.password,
-            newPassword: user_testing.password + "change",
-            rePassword: user_testing.password + "change",
+            password: user_customer_testing.password,
+            newPassword: user_customer_testing.password + "change",
+            rePassword: user_customer_testing.password + "change",
           },
           {
             headers: { Authorization: `Bearer ${token}` },

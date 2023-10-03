@@ -4,10 +4,11 @@ import { StatusCodes } from "npm:http-status-codes@2.2.0";
 import axios from "npm:axios@1.4.0";
 import { getUrlDev } from "../src/utils/unit_test.ts";
 
-import { user_testing } from "../src/config.ts";
+import { user_customer_testing } from "../src/config.ts";
 import { isString } from "../src/helpers/validation.ts";
 
-const token = await Deno.readTextFile("tests/token.txt");
+const token_admin = await Deno.readTextFile("tests/token-admin.txt");
+const token_customer = await Deno.readTextFile("tests/token-customer.txt");
 
 // ======================================================================== //
 // -> User Address
@@ -29,7 +30,7 @@ Deno.test(
             rajaongkir_code: "DTO123",
           },
           {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: `Bearer ${token_customer}` },
           }
         )
         .then((res) => res.data);
@@ -62,7 +63,7 @@ Deno.test(
             rajaongkir_code: "YUH456",
           },
           {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: `Bearer ${token_customer}` },
           }
         )
         .then((res) => res.data);
@@ -87,7 +88,7 @@ Deno.test(
     try {
       const result = await axios
         .get(`${getUrlDev}/api/user/v1/address`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token_customer}` },
         })
         .then((res) => res.data);
       assertEquals(result.statusCode, StatusCodes.OK);
@@ -121,7 +122,7 @@ Deno.test(
             rajaongkir_code: "SIP123",
           },
           {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: `Bearer ${token_customer}` },
           }
         )
         .then((res) => res.data);
@@ -142,7 +143,7 @@ Deno.test(
     try {
       const result = await axios
         .get(`${getUrlDev}/api/user/v1/address`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token_customer}` },
         })
         .then((res) => res.data);
       assertEquals(result.statusCode, StatusCodes.OK);
@@ -168,7 +169,7 @@ Deno.test(
           `${getUrlDev}/api/user/v1/address-set-default/${addressId}`,
           {},
           {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: `Bearer ${token_customer}` },
           }
         )
         .then((res) => res.data);
@@ -189,7 +190,7 @@ Deno.test(
     try {
       const result = await axios
         .delete(`${getUrlDev}/api/user/v1/address/${addressId}`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token_customer}` },
         })
         .then((res) => res.data);
       assertEquals(result.statusCode, StatusCodes.OK);
@@ -209,7 +210,7 @@ Deno.test(
     try {
       const result = await axios
         .get(`${getUrlDev}/api/user/v1/address`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${token_customer}` },
         })
         .then((res) => res.data);
       assertEquals(result.statusCode, StatusCodes.OK);

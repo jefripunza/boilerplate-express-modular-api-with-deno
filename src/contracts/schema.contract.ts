@@ -18,7 +18,7 @@ export const uuid_format = z
 export const username = z
   .string()
   .min(6, "username min 6 karakter!")
-  .max(19, "username max 19 karakter!");
+  .max(25, "username max 25 karakter!");
 export const password = z
   .string()
   .min(8, "Password harus minimal 8 karakter!")

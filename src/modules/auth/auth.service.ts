@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "npm:uuid@9.0.0";
 
 import { StatusCodes } from "npm:http-status-codes@2.2.0";
 import * as DTO from "../../dto.ts";
+import { Server } from "../../env.ts";
 
 import RoleModel, { Role } from "../user-role/user-role.model.ts";
 import UserModel, { User } from "../user/user.model.ts";
@@ -13,7 +14,7 @@ import RevokeTokenModel, { RevokeToken } from "./revoke-token.model.ts";
 
 import * as jwt from "../../utils/jsonwebtoken.ts";
 import * as encryption from "../../utils/encryption.ts";
-import { user_testing } from "../../config.ts";
+import { user_admin_testing, user_customer_testing } from "../../config.ts";
 
 class AuthService {
   async register(
@@ -31,7 +32,10 @@ class AuthService {
       }
 
       const role = await RoleModel.findOne({
-        name: Role.Customer,
+        name:
+          Server.isDevelopment && username == user_admin_testing.username
+            ? Role.Admin
+            : Role.Customer,
       });
       await UserModel.create({
         // @ts-ignore
@@ -159,7 +163,7 @@ class AuthService {
       console.log({ username, your_ref: generate_ref }); // send email...
 
       const message = "sukses mengirimkan link reset password di email anda!";
-      if (user_testing.username == username) {
+      if (user_customer_testing.username == username) {
         return DTO.successResponse({
           message,
           data: {

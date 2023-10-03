@@ -4,11 +4,16 @@ import * as DTO from "../../dto.ts";
 import UserModel from "../user/user.model.ts";
 import UserAddressModel from "../user/user-address.model.ts";
 
-import { user_testing } from "../../config.ts";
+import { user_admin_testing, user_customer_testing } from "../../config.ts";
 
 class UnitTestingService {
   async clearWithUsername(username: string) {
-    if (user_testing.username != username) {
+    if (
+      !(
+        user_admin_testing.username == username ||
+        user_customer_testing.username == username
+      )
+    ) {
       return DTO.errorResponse({
         message: "it's not user testing...",
       });

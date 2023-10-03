@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     ports:
-      - "1337:1337"
+      - "12123:1337"
     # volumes:
     #   # setup file or folder
     #   - /mnt/storage/try-deno:/app/assets
