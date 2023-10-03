@@ -1,6 +1,7 @@
 import { StatusCodes } from "npm:http-status-codes@2.2.0";
 // @deno-types="npm:@types/jsonwebtoken@9.0.2"
 import jwt from "npm:jsonwebtoken@9.0.0";
+// @deno-types="npm:@types/uuid@9.0.0"
 import { v4 as uuidv4 } from "npm:uuid@9.0.0";
 
 import { Jwt } from "../env.ts";

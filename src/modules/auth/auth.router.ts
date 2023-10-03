@@ -29,20 +29,16 @@ router.post(
   }),
   Handler.login
 );
-router.delete(
-  "/api/auth/v1/logout",
-  tokenValidation(Role.All),
-  Handler.logout
-);
+router.delete("/api/auth/v1/logout", tokenValidation(Role.All), Handler.logout);
 
-// Token...
+// Token Validation...
 router.get(
   "/api/auth/v1/token-validation",
   tokenValidation(Role.All),
   Handler.tokenValidation
 );
 
-// Password...
+// Reset Password...
 router.post(
   "/api/auth/v1/reset-password",
   tokenValidation(Role.All),

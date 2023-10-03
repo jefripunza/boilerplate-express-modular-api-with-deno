@@ -1,6 +1,7 @@
 // deno-lint-ignore-file ban-ts-comment
 // @deno-types="npm:@types/express@4"
 import { Response } from "npm:express@4.18.2";
+// @deno-types="npm:@types/uuid@9.0.0"
 import { v4 as uuidv4 } from "npm:uuid@9.0.0";
 
 import { StatusCodes } from "npm:http-status-codes@2.2.0";
@@ -12,6 +13,7 @@ import RevokeTokenModel, { RevokeToken } from "./revoke-token.model.ts";
 
 import * as jwt from "../../utils/jsonwebtoken.ts";
 import * as encryption from "../../utils/encryption.ts";
+import { user_testing } from "../../config.ts";
 
 class BrandService {
   async register(
@@ -154,10 +156,20 @@ class BrandService {
         }
       );
 
-      console.log({ your_ref: generate_ref }); // send email...
+      console.log({ username, your_ref: generate_ref }); // send email...
+
+      const message = "sukses mengirimkan link reset password di email anda!";
+      if (user_testing.username == username) {
+        return DTO.successResponse({
+          message,
+          data: {
+            ref: generate_ref,
+          },
+        });
+      }
 
       return DTO.successResponse({
-        message: "sukses mengirimkan link reset password di email anda!",
+        message,
       });
     } catch (error) {
       return DTO.internalServerErrorResponse(
@@ -190,7 +202,6 @@ class BrandService {
           message: "password dan ulang password tidak sama!",
         });
       }
-      console.log({ isRefExist });
 
       await UserModel.updateOne(
         {

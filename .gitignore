@@ -1,9 +1,11 @@
+/assets/public/image
+/assets/public/pdf
+/assets/public/doc
+/check
+
 .env
 deno.lock
 swagger.json
 test.ts
+run.exe
 try-deno.exe
-
-/assets/public/image
-/assets/public/pdf
-/assets/public/doc

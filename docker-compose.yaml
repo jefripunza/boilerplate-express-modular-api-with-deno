@@ -1,15 +1,15 @@
 version: "3.8"
 services:
-  deno-example:
+  try-deno:
     build:
       context: .
       dockerfile: Dockerfile
     restart: always
     ports:
-      - "1337:8080"
+      - "1337:1337"
     # volumes:
     #   # setup file or folder
-    #   - /mnt/storage/digimon-dev:/app/assets
+    #   - /mnt/storage/try-deno:/app/assets
     network_mode: bridge
     extra_hosts:
       - "host.docker.internal:host-gateway"

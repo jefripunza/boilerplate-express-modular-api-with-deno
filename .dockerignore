@@ -1,5 +1,6 @@
 .vscode
-assets
+assets/public/image
+assets/strict
 tests
 
 .dockerignore

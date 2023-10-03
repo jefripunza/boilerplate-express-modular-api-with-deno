@@ -1,7 +1,6 @@
 // deno-lint-ignore-file ban-ts-comment
 // @deno-types="npm:@types/express@4"
 import { Response } from "npm:express@4.18.2";
-import { v4 as uuidv4 } from "npm:uuid@9.0.0";
 
 import { StatusCodes } from "npm:http-status-codes@2.2.0";
 import * as DTO from "../../dto.ts";

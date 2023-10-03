@@ -1,19 +1,17 @@
 import * as path from "https://deno.land/std@0.202.0/path/mod.ts";
 
 export const project_root = Deno.cwd();
+export const __filename = new URL("", import.meta.url).pathname;
 
 // Directory
 const apps_dir = path.join(project_root, "src/apps");
 const contracts_dir = path.join(project_root, "src/contracts");
 const helpers_dir = path.join(project_root, "src/helpers");
 const middlewares_dir = path.join(project_root, "src/middlewares");
-const repositories_dir = path.join(project_root, "src/models/repositories");
 const tests_dir = path.join(project_root, "tests");
 
 // usable
 export const modules_dir = path.join(project_root, "src/modules");
-export const migrations_dir = path.join(project_root, `src/models/migrations`);
-export const seeds_dir = path.join(project_root, `src/models/seeds`);
 
 // public
 export const public_dir = path.join(project_root, `assets/public`);
@@ -30,12 +28,9 @@ const directories = [
   contracts_dir,
   helpers_dir,
   middlewares_dir,
-  repositories_dir,
   tests_dir,
 
   modules_dir,
-  migrations_dir,
-  seeds_dir,
 
   user_dir,
   product_dir,
@@ -55,10 +50,16 @@ for (const dir of directories) {
 }
 
 // File
+export const app_file = path.join(project_root, "run");
 export const swagger_json_file = path.join(project_root, "swagger.json");
+export const swagger_json_ts_file = path.join(
+  project_root,
+  "src",
+  "swagger_json.ts"
+);
 export const swagger_html_file = path.join(
   project_root,
   "assets",
   "public",
-  "swagger.html",
+  "swagger.html"
 );

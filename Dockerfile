@@ -3,6 +3,7 @@ FROM denoland/deno:alpine AS builder
 WORKDIR /app
 COPY . .
 
+RUN deno run -A swagger_exec.ts
 RUN deno compile --allow-read --allow-write --allow-net --allow-env --allow-sys --output run index.ts
 
 # ===================================================================================================== #

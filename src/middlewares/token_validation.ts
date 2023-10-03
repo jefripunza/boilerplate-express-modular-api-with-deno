@@ -1,49 +1,84 @@
 // @deno-types="npm:@types/express@4"
 import { NextFunction, Request, Response } from "npm:express@4.18.2";
 import { StatusCodes } from "npm:http-status-codes@2.2.0";
-import { IRequestJoin } from "../contracts/request.contract.ts";
 
 import * as jwt from "../utils/jsonwebtoken.ts";
+import * as DTO from "../dto.ts";
 
 import RevokeTokenModel, {
   RevokeToken,
 } from "../modules/auth/revoke-token.model.ts";
 
 import { Role } from "../modules/user-role/user-role.model.ts";
+import UserModel from "../modules/user/user.model.ts";
 
-export default (role: Role) =>
+export default (...roles: Role[]) =>
   async (req: any, res: Response, next: NextFunction) => {
     let token = req.headers.authorization || req.cookies.token;
 
     if (!token) {
-      return res.status(StatusCodes.FORBIDDEN).json({
-        message: "Authorization is required!",
-      });
+      return res.status(StatusCodes.FORBIDDEN).json(
+        DTO.errorResponse({
+          message: "Authorization is required!",
+          statusCode: StatusCodes.FORBIDDEN,
+        })
+      );
     }
     token = String(token).replace("Bearer ", "");
 
     try {
       const { error, message, data } = await jwt.verifyToken(token);
       if (error) {
-        return res.status(error).json({
-          message,
-        });
+        return res.status(error).json(
+          DTO.errorResponse({
+            message,
+            statusCode: error,
+          })
+        );
       }
       if (!data) {
-        return res.status(StatusCodes.FORBIDDEN).json({
-          message: "Data on JWT not found!",
-        });
+        return res.status(StatusCodes.FORBIDDEN).json(
+          DTO.errorResponse({
+            message: "Data on JWT not found!",
+            statusCode: StatusCodes.FORBIDDEN,
+          })
+        );
       }
 
+      // check session
       const isValidSession = await RevokeTokenModel.findOne({
         user: data.id,
         jwtid: data.jti,
       });
       if (!isValidSession) {
         res.clearCookie("token");
-        return res.status(StatusCodes.BAD_REQUEST).json({
-          message: "invalid session!",
-        });
+        return res.status(StatusCodes.BAD_REQUEST).json(
+          DTO.errorResponse({
+            message: "invalid session!",
+            statusCode: StatusCodes.BAD_REQUEST,
+          })
+        );
+      }
+
+      // check permit
+      if (!roles.includes(Role.All)) {
+        const isUserPermit = await UserModel.findOne(
+          { _id: data.id },
+          { role: 1 }
+        )
+          .populate("role")
+          .then((doc: any) => {
+            doc.role = doc.role.name;
+            return doc;
+          });
+        if (!roles.includes(isUserPermit.role)) {
+          return res.status(StatusCodes.BAD_REQUEST).json(
+            DTO.errorResponse({
+              message: "user not permit!",
+              statusCode: StatusCodes.BAD_REQUEST,
+            })
+          );
+        }
       }
 
       // check expired
@@ -75,8 +110,10 @@ export default (role: Role) =>
       res.locals.user = data;
       return next();
     } catch (error) {
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: "internal server error",
-      });
+      return res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json(
+          DTO.internalServerErrorResponse("middlewares.token-validation", error)
+        );
     }
   };
