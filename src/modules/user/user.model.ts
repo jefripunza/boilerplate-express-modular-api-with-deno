@@ -5,31 +5,32 @@ import mongoose, {
   Schema,
 } from "npm:mongoose@^6.7";
 
-import UserRoleModel, { Role } from "../user-role/user-role.model.ts";
+import UserRoleModel, { Role } from "./user-role.model.ts";
 
 import * as encryption from "../../utils/encryption.ts";
 import { insertDocument } from "../../apps/mongoose.ts";
+const Types = mongoose.Schema.Types;
 
 const UserSchema = new Schema(
   {
     role: {
-      type: mongoose.Schema.Types.String,
+      type: Types.String,
       ref: "UserRole",
       required: true,
     },
 
     username: {
-      type: mongoose.Schema.Types.String,
+      type: Types.String,
       required: true,
       unique: true,
     },
-    password: { type: mongoose.Schema.Types.String, required: true },
+    password: { type: Types.String, required: true },
 
-    name: { type: mongoose.Schema.Types.String, required: true },
-    profile_image: { type: mongoose.Schema.Types.String },
+    name: { type: Types.String, required: true },
+    profile_image: { type: Types.String },
 
     // forgot password
-    forgot_password_ref: { type: mongoose.Schema.Types.String },
+    forgot_password_ref: { type: Types.String },
   },
   {
     timestamps: true,

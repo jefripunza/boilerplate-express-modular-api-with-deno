@@ -51,7 +51,10 @@ deno upgrade
 
 ### #Prepare Project!
 
-1. Clone this repo `git clone https://github.com/jefripunza/boilerplate-express-modular-api-with-deno`
+1. Clone this repo
+```bash
+git clone https://github.com/jefripunza/boilerplate-express-modular-api-with-deno
+```
 2. Open **VSCode** and open folder project
 3. install first :
 ```bash

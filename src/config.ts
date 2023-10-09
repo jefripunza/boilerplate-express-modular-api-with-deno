@@ -20,6 +20,12 @@ export const user_admin_testing = {
 
   name: "Mamank Soto Babat",
 };
+export const user_merchant_testing = {
+  username: "user_merchant_testing",
+  password: "jooss@123Tenaannn",
+
+  name: "Bapak Kau Salto",
+};
 export const user_customer_testing = {
   username: "user_customer_testing",
   password: "hanyaakuyangtau@123OK",

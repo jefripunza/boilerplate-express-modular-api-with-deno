@@ -5,6 +5,7 @@ import mongoose, {
   Schema,
 } from "npm:mongoose@^6.7";
 import { insertDocument } from "../../apps/mongoose.ts";
+const Types = mongoose.Schema.Types;
 
 export enum Permissions {
   viewUser = "VIEW_USER",
@@ -38,14 +39,14 @@ export enum Permissions {
 const PermissionSchema = new Schema(
   {
     key: {
-      type: mongoose.Schema.Types.String,
+      type: Types.String,
       enum: Object.values(Permissions),
       unique: true,
       required: true,
     },
-    description: { type: mongoose.Schema.Types.String },
-    group: { type: mongoose.Schema.Types.String },
-    parentGroup: { type: mongoose.Schema.Types.String },
+    description: { type: Types.String },
+    group: { type: Types.String },
+    parentGroup: { type: Types.String },
   },
   {
     timestamps: true,

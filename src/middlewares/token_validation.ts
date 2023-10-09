@@ -9,7 +9,7 @@ import RevokeTokenModel, {
   RevokeToken,
 } from "../modules/auth/revoke-token.model.ts";
 
-import { Role } from "../modules/user-role/user-role.model.ts";
+import { Role } from "../modules/user/user-role.model.ts";
 import UserModel from "../modules/user/user.model.ts";
 
 export default (...roles: Role[]) =>

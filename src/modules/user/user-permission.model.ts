@@ -9,22 +9,23 @@ import { insertDocument } from "../../apps/mongoose.ts";
 import PermissionModel, {
   Permissions,
 } from "../permission/permission.model.ts";
-import UserRoleModel, { Role } from "../user-role/user-role.model.ts";
+import UserRoleModel, { Role } from "./user-role.model.ts";
+const Types = mongoose.Schema.Types;
 
 const UserPermissionSchema = new Schema(
   {
     role: {
-      type: mongoose.Schema.Types.String,
+      type: Types.String,
       ref: "UserRole",
       required: true,
     },
     permission: {
-      type: mongoose.Schema.Types.String,
+      type: Types.String,
       ref: "Permission",
       required: true,
     },
     canAccess: {
-      type: mongoose.Schema.Types.Boolean,
+      type: Types.Boolean,
       required: true,
     },
   },

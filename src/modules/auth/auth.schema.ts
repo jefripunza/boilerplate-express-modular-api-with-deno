@@ -7,17 +7,16 @@ import {
   uuid_format,
 } from "../../contracts/schema.contract.ts";
 
-export const authSchema = {
+export const authSchema = z.object({
   params: z.object({}),
   body: z.object({}),
   query: z.object({}),
-};
-const schemaAuth = z.object(authSchema);
-export type AuthSchema = z.TypeOf<typeof schemaAuth>;
+});
+export type AuthSchema = z.TypeOf<typeof authSchema>;
 
 // ==================================================================================
 
-export const authRegisterSchema = {
+export const authRegisterSchema = z.object({
   body: z.object({
     username,
     password,
@@ -25,38 +24,34 @@ export const authRegisterSchema = {
     name,
     profile_image,
   }),
-};
-const schemaAuthRegister = z.object(authRegisterSchema);
-export type AuthRegisterSchema = z.TypeOf<typeof schemaAuthRegister>;
+});
+export type AuthRegisterSchema = z.TypeOf<typeof authRegisterSchema>;
 
-export const authLoginSchema = {
+export const authLoginSchema = z.object({
   body: z.object({
     username,
     password,
   }),
-};
-const schemaAuthLogin = z.object(authLoginSchema);
-export type AuthLoginSchema = z.TypeOf<typeof schemaAuthLogin>;
+});
+export type AuthLoginSchema = z.TypeOf<typeof authLoginSchema>;
 
-export const authRequestResetPasswordSchema = {
+export const authRequestResetPasswordSchema = z.object({
   body: z.object({
     username,
   }),
-};
-const schemaAuthRequestResetPassword = z.object(authRequestResetPasswordSchema);
+});
 export type AuthRequestResetPasswordSchema = z.TypeOf<
-  typeof schemaAuthRequestResetPassword
+  typeof authRequestResetPasswordSchema
 >;
 
-export const authSubmitResetPasswordSchema = {
+export const authSubmitResetPasswordSchema = z.object({
   body: z.object({
     ref: uuid_format,
     password,
     newPassword: password,
     rePassword: password,
   }),
-};
-const schemaAuthSubmitResetPassword = z.object(authSubmitResetPasswordSchema);
+});
 export type AuthSubmitResetPasswordSchema = z.TypeOf<
-  typeof schemaAuthSubmitResetPassword
+  typeof authSubmitResetPasswordSchema
 >;

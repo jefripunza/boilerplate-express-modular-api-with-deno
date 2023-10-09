@@ -4,11 +4,12 @@ import mongoose, {
   model,
   Schema,
 } from "npm:mongoose@^6.7";
+const Types = mongoose.Schema.Types;
 
 const RevokeTokenSchema = new Schema(
   {
-    user: { type: mongoose.Schema.Types.String, ref: "User", required: true },
-    jwtid: { type: mongoose.Schema.Types.String, required: true },
+    user: { type: Types.String, ref: "User", required: true },
+    jwtid: { type: Types.String, required: true },
   },
   {
     timestamps: true,

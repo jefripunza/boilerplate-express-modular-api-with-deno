@@ -8,9 +8,7 @@ const router = Router();
 
 router.get(
   "/api/unit-testing/v1/clear-with-username/:username",
-  zodValidate({
-    params: unitTestingDeleteUserSchema["params"],
-  }),
+  zodValidate(unitTestingDeleteUserSchema),
   Handler.clearWithUsername
 );
 

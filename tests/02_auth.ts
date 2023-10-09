@@ -4,7 +4,11 @@ import { StatusCodes } from "npm:http-status-codes@2.2.0";
 import axios from "npm:axios@1.4.0";
 import { getUrlDev } from "../src/utils/unit_test.ts";
 
-import { user_admin_testing, user_customer_testing } from "../src/config.ts";
+import {
+  user_admin_testing,
+  user_merchant_testing,
+  user_customer_testing,
+} from "../src/config.ts";
 import {
   isArrayOfString,
   isString,
@@ -12,6 +16,7 @@ import {
 } from "../src/helpers/validation.ts";
 
 const token_admin = "tests/token-admin.txt";
+const token_merchant = "tests/token-merchant.txt";
 const token_customer = "tests/token-customer.txt";
 
 let token: any = null;
@@ -54,11 +59,11 @@ Deno.test(
 );
 
 Deno.test(
-  "Auth, Register New User (Positive) : user customer created",
+  "Auth, Register New User (Positive) : user admin created",
   async () => {
     try {
       const result = await axios
-        .post(`${getUrlDev}/api/auth/v1/register`, user_customer_testing)
+        .post(`${getUrlDev}/api/auth/v1/register`, user_admin_testing)
         .then((res) => res.data);
       assertEquals(result.statusCode, StatusCodes.CREATED);
       assertEquals(result.message, "OK");
@@ -73,11 +78,30 @@ Deno.test(
 );
 
 Deno.test(
-  "Auth, Register New User (Positive) : user admin created",
+  "Auth, Register New User (Positive) : user merchant created",
   async () => {
     try {
       const result = await axios
-        .post(`${getUrlDev}/api/auth/v1/register`, user_admin_testing)
+        .post(`${getUrlDev}/api/auth/v1/register`, user_merchant_testing)
+        .then((res) => res.data);
+      assertEquals(result.statusCode, StatusCodes.CREATED);
+      assertEquals(result.message, "OK");
+      assertEquals(result.success, true);
+      assertEquals(result.data, []);
+    } catch (error) {
+      const { statusCode, message, success, data } = error.response.data;
+      console.log({ statusCode, message, data });
+      assertEquals(statusCode, StatusCodes.CREATED);
+    }
+  }
+);
+
+Deno.test(
+  "Auth, Register New User (Positive) : user customer created",
+  async () => {
+    try {
+      const result = await axios
+        .post(`${getUrlDev}/api/auth/v1/register`, user_customer_testing)
         .then((res) => res.data);
       assertEquals(result.statusCode, StatusCodes.CREATED);
       assertEquals(result.message, "OK");
@@ -199,6 +223,32 @@ Deno.test("Auth, Login User (Positive) : admin logged", async () => {
   }
 });
 
+Deno.test("Auth, Login User (Positive) : merchant logged", async () => {
+  try {
+    const result = await axios
+      .post(`${getUrlDev}/api/auth/v1/login`, {
+        username: user_merchant_testing.username,
+        password: user_merchant_testing.password,
+      })
+      .then((res) => res.data);
+    assertEquals(result.statusCode, StatusCodes.OK);
+    assertEquals(result.message, "OK");
+    assertEquals(result.success, true);
+
+    const { permissions, role, token: newToken, userId } = result.data;
+    assertEquals(isArrayOfString(permissions), true);
+    assertEquals(isString(role), true);
+    assertEquals(isString(newToken), true);
+    assertEquals(isString(userId), true);
+
+    await Deno.writeTextFile(token_merchant, newToken);
+  } catch (error) {
+    const { statusCode, message, success, data } = error.response.data;
+    console.log({ statusCode, message, data });
+    assertEquals(statusCode, StatusCodes.OK);
+  }
+});
+
 Deno.test("Auth, Login User (Positive) : customer logged", async () => {
   try {
     const result = await axios
@@ -217,7 +267,49 @@ Deno.test("Auth, Login User (Positive) : customer logged", async () => {
     assertEquals(isString(newToken), true);
     assertEquals(isString(userId), true);
 
-    await Deno.writeTextFile(token_customer, newToken);
+    token = newToken;
+  } catch (error) {
+    const { statusCode, message, success, data } = error.response.data;
+    console.log({ statusCode, message, data });
+    assertEquals(statusCode, StatusCodes.OK);
+  }
+});
+
+Deno.test("Auth, Logout User (Positive) : customer test logout", async () => {
+  try {
+    const result = await axios
+      .delete(`${getUrlDev}/api/auth/v1/logout`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((res) => res.data);
+    assertEquals(result.statusCode, StatusCodes.OK);
+    assertEquals(result.message, "berhasil logout");
+    assertEquals(result.success, true);
+  } catch (error) {
+    const { statusCode, message, success, data } = error.response.data;
+    console.log({ statusCode, message, data });
+    assertEquals(statusCode, StatusCodes.OK);
+  }
+});
+
+Deno.test("Auth, Login User (Positive) : customer login again", async () => {
+  try {
+    const result = await axios
+      .post(`${getUrlDev}/api/auth/v1/login`, {
+        username: user_customer_testing.username,
+        password: user_customer_testing.password,
+      })
+      .then((res) => res.data);
+    assertEquals(result.statusCode, StatusCodes.OK);
+    assertEquals(result.message, "OK");
+    assertEquals(result.success, true);
+
+    const { permissions, role, token: newToken, userId } = result.data;
+    assertEquals(isArrayOfString(permissions), true);
+    assertEquals(isString(role), true);
+    assertEquals(isString(newToken), true);
+    assertEquals(isString(userId), true);
+
     token = newToken;
   } catch (error) {
     const { statusCode, message, success, data } = error.response.data;
@@ -479,6 +571,54 @@ Deno.test(
     } catch (error) {
       const { statusCode, message, success, data } = error.response.data;
       console.log({ statusCode, message, success, data });
+      assertEquals(statusCode, StatusCodes.OK);
+    }
+  }
+);
+
+Deno.test(
+  "Auth, Token Validation (Negative) : invalid session after reset password",
+  async () => {
+    try {
+      await axios
+        .get(`${getUrlDev}/api/auth/v1/token-validation`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => res.data);
+    } catch (error) {
+      const { statusCode, message, success, data } = error.response.data;
+      assertEquals(statusCode, StatusCodes.BAD_REQUEST);
+      assertEquals(message, "invalid session!");
+      assertEquals(success, false);
+    }
+  }
+);
+
+Deno.test(
+  "Auth, Login User (Positive) : customer login after reset password",
+  async () => {
+    try {
+      const result = await axios
+        .post(`${getUrlDev}/api/auth/v1/login`, {
+          username: user_customer_testing.username,
+          password: user_customer_testing.password + "change",
+        })
+        .then((res) => res.data);
+      assertEquals(result.statusCode, StatusCodes.OK);
+      assertEquals(result.message, "OK");
+      assertEquals(result.success, true);
+
+      const { permissions, role, token: newToken, userId } = result.data;
+      assertEquals(isArrayOfString(permissions), true);
+      assertEquals(isString(role), true);
+      assertEquals(isString(newToken), true);
+      assertEquals(isString(userId), true);
+
+      await Deno.writeTextFile(token_customer, newToken);
+      token = newToken;
+    } catch (error) {
+      const { statusCode, message, success, data } = error.response.data;
+      console.log({ statusCode, message, data });
       assertEquals(statusCode, StatusCodes.OK);
     }
   }

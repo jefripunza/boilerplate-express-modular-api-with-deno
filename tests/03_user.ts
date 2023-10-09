@@ -6,9 +6,10 @@ import { getUrlDev } from "../src/utils/unit_test.ts";
 
 import { isString } from "../src/helpers/validation.ts";
 
-import { Role } from "../src/modules/user-role/user-role.model.ts";
+import { Role } from "../src/modules/user/user-role.model.ts";
 
 const token_admin = await Deno.readTextFile("tests/token-admin.txt");
+const token_merchant = await Deno.readTextFile("tests/token-merchant.txt");
 const token_customer = await Deno.readTextFile("tests/token-customer.txt");
 
 // ======================================================================== //

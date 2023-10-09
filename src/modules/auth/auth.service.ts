@@ -8,13 +8,17 @@ import { StatusCodes } from "npm:http-status-codes@2.2.0";
 import * as DTO from "../../dto.ts";
 import { Server } from "../../env.ts";
 
-import RoleModel, { Role } from "../user-role/user-role.model.ts";
+import RoleModel, { Role } from "../user/user-role.model.ts";
 import UserModel, { User } from "../user/user.model.ts";
 import RevokeTokenModel, { RevokeToken } from "./revoke-token.model.ts";
 
 import * as jwt from "../../utils/jsonwebtoken.ts";
 import * as encryption from "../../utils/encryption.ts";
-import { user_admin_testing, user_customer_testing } from "../../config.ts";
+import {
+  user_admin_testing,
+  user_merchant_testing,
+  user_customer_testing,
+} from "../../config.ts";
 
 class AuthService {
   async register(
@@ -35,6 +39,8 @@ class AuthService {
         name:
           Server.isDevelopment && username == user_admin_testing.username
             ? Role.Admin
+            : Server.isDevelopment && username == user_merchant_testing.username
+            ? Role.Merchant
             : Role.Customer,
       });
       await UserModel.create({
@@ -111,7 +117,7 @@ class AuthService {
       res.clearCookie("token");
 
       return DTO.successResponse({
-        statusCode: StatusCodes.NO_CONTENT,
+        message: "berhasil logout",
       });
     } catch (error) {
       return DTO.internalServerErrorResponse("auth.logout", error);
@@ -220,6 +226,9 @@ class AuthService {
           },
         }
       );
+      await RevokeTokenModel.deleteMany({
+        user: isRefExist._id,
+      });
 
       return DTO.successResponse({
         message: "password anda berhasil dirubah!",

@@ -38,7 +38,7 @@ export const createUserAddress = async (req: Request, res: Response) => {
   */
 
   const { id }: ITokenContent = res.locals.user;
-  const { title, full, coordinate, postcode, rajaongkir_code } = req.body;
+  const { title, full, coordinate, postcode, rajaongkirCode } = req.body;
 
   const response = await Service.createUserAddress(
     id,
@@ -47,7 +47,7 @@ export const createUserAddress = async (req: Request, res: Response) => {
     full,
     coordinate,
     postcode,
-    rajaongkir_code
+    rajaongkirCode
   );
 
   return res.status(response.statusCode).json(response);
@@ -72,7 +72,7 @@ export const updateUserAddress = async (req: Request, res: Response) => {
 
   const { id }: ITokenContent = res.locals.user;
   const { addressId } = req.params;
-  const { title, full, coordinate, postcode, rajaongkir_code } = req.body;
+  const { title, full, coordinate, postcode, rajaongkirCode } = req.body;
 
   const response = await Service.updateUserAddress(
     id,
@@ -82,7 +82,7 @@ export const updateUserAddress = async (req: Request, res: Response) => {
     full,
     coordinate,
     postcode,
-    rajaongkir_code
+    rajaongkirCode
   );
 
   return res.status(response.statusCode).json(response);

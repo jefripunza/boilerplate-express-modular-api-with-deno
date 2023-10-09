@@ -7,34 +7,31 @@ import {
   uuid_format,
 } from "../../contracts/schema.contract.ts";
 
-export const userSchema = {
+export const userSchema = z.object({
   params: z.object({}),
   body: z.object({}),
   query: z.object({}),
-};
-const schemaUser = z.object(userSchema);
-export type UserSchema = z.TypeOf<typeof schemaUser>;
+});
+export type UserSchema = z.TypeOf<typeof userSchema>;
 
-export const userAddressSchema = {
+export const userAddressSchema = z.object({
   params: z.object({}),
   body: z.object({}),
   query: z.object({}),
-};
-const schemaUserAddress = z.object(userAddressSchema);
-export type UserAddressSchema = z.TypeOf<typeof schemaUserAddress>;
+});
+export type UserAddressSchema = z.TypeOf<typeof userAddressSchema>;
 
 // ==================================================================================
 
-export const userUpdateSchema = {
+export const userUpdateSchema = z.object({
   body: z.object({
     name: name.optional(),
     profile_image: profile_image.optional(),
   }),
-};
-const schemaUserUpdate = z.object(userUpdateSchema);
-export type UserUpdateSchema = z.TypeOf<typeof schemaUserUpdate>;
+});
+export type UserUpdateSchema = z.TypeOf<typeof userUpdateSchema>;
 
-export const userAddressCreateSchema = {
+export const userAddressCreateSchema = z.object({
   body: z.object({
     title: z.string(),
     full: z.string(),
@@ -42,13 +39,12 @@ export const userAddressCreateSchema = {
     postcode: z.string().length(5),
 
     // raja ongkir detail...
-    rajaongkir_code: z.string(),
+    rajaongkirCode: z.string(),
   }),
-};
-const schemaUserAddressCreate = z.object(userAddressCreateSchema);
-export type UserAddressCreateSchema = z.TypeOf<typeof schemaUserAddressCreate>;
+});
+export type UserAddressCreateSchema = z.TypeOf<typeof userAddressCreateSchema>;
 
-export const userAddressUpdateSchema = {
+export const userAddressUpdateSchema = z.object({
   params: z.object({
     addressId: z.string(),
   }),
@@ -59,8 +55,7 @@ export const userAddressUpdateSchema = {
     postcode: z.string().length(5).optional(),
 
     // raja ongkir detail...
-    rajaongkir_code: z.string().optional(),
+    rajaongkirCode: z.string().optional(),
   }),
-};
-const schemaUserAddressUpdate = z.object(userAddressUpdateSchema);
-export type UserAddressUpdateSchema = z.TypeOf<typeof schemaUserAddressUpdate>;
+});
+export type UserAddressUpdateSchema = z.TypeOf<typeof userAddressUpdateSchema>;

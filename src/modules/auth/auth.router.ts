@@ -9,26 +9,18 @@ import {
 } from "./auth.schema.ts";
 
 import tokenValidation from "../../middlewares/token_validation.ts";
-import { Role } from "../user-role/user-role.model.ts";
+import { Role } from "../user/user-role.model.ts";
 
 import * as Handler from "./auth.handler.ts";
 const router = Router();
 
 router.post(
   "/api/auth/v1/register",
-  zodValidate({
-    body: authRegisterSchema["body"],
-  }),
+  zodValidate(authRegisterSchema),
   Handler.register
 );
 
-router.post(
-  "/api/auth/v1/login",
-  zodValidate({
-    body: authLoginSchema["body"],
-  }),
-  Handler.login
-);
+router.post("/api/auth/v1/login", zodValidate(authLoginSchema), Handler.login);
 router.delete("/api/auth/v1/logout", tokenValidation(Role.All), Handler.logout);
 
 // Token Validation...
@@ -42,17 +34,13 @@ router.get(
 router.post(
   "/api/auth/v1/reset-password",
   tokenValidation(Role.All),
-  zodValidate({
-    body: authRequestResetPasswordSchema["body"],
-  }),
+  zodValidate(authRequestResetPasswordSchema),
   Handler.requestResetPassword
 );
 router.put(
   "/api/auth/v1/reset-password",
   tokenValidation(Role.All),
-  zodValidate({
-    body: authSubmitResetPasswordSchema["body"],
-  }),
+  zodValidate(authSubmitResetPasswordSchema),
   Handler.submitResetPassword
 );
 

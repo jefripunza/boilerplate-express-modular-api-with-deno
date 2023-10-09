@@ -4,44 +4,45 @@ import mongoose, {
   model,
   Schema,
 } from "npm:mongoose@^6.7";
+const Types = mongoose.Schema.Types;
 
 const UserAddressSchema = new Schema(
   {
     user: {
-      type: mongoose.Schema.Types.String,
+      type: Types.String,
       ref: "User",
       required: true,
     },
 
     title: {
-      type: mongoose.Schema.Types.String,
+      type: Types.String,
       required: true,
     },
     full: {
-      type: mongoose.Schema.Types.String,
+      type: Types.String,
       required: true,
     },
     coordinate: [
       {
-        type: mongoose.Schema.Types.String,
+        type: Types.String,
         required: true,
       },
     ],
     postcode: {
-      type: mongoose.Schema.Types.String,
+      type: Types.String,
       required: true,
     },
-    rajaongkir_code: {
-      type: mongoose.Schema.Types.String,
+    rajaongkirCode: {
+      type: Types.String,
       required: true,
     },
 
     isDefault: {
-      type: mongoose.Schema.Types.Boolean,
+      type: Types.Boolean,
       default: false,
     },
 
-    deletedAt: { type: mongoose.Schema.Types.Date, default: undefined },
+    deletedAt: { type: Types.Date, default: undefined },
   },
   {
     timestamps: true,

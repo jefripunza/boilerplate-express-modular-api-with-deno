@@ -67,7 +67,7 @@ class UserService {
     full: string,
     coordinate: string[],
     postcode: string,
-    rajaongkir_code: string
+    rajaongkirCode: string
   ) {
     try {
       const user_address = await UserAddressModel.find({
@@ -84,7 +84,7 @@ class UserService {
         full,
         coordinate,
         postcode,
-        rajaongkir_code,
+        rajaongkirCode,
 
         isDefault,
       });
@@ -124,7 +124,7 @@ class UserService {
     full: string,
     coordinate: string[],
     postcode: string,
-    rajaongkir_code: string
+    rajaongkirCode: string
   ) {
     try {
       const isAddressExist = await UserAddressModel.findOne({
@@ -151,8 +151,8 @@ class UserService {
       if (postcode) {
         updated["postcode"] = postcode;
       }
-      if (rajaongkir_code) {
-        updated["rajaongkir_code"] = rajaongkir_code;
+      if (rajaongkirCode) {
+        updated["rajaongkirCode"] = rajaongkirCode;
       }
 
       await UserAddressModel.updateOne(

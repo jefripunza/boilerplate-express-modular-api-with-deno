@@ -5,6 +5,7 @@ import mongoose, {
   Schema,
 } from "npm:mongoose@^6.7";
 import { insertDocument } from "../../apps/mongoose.ts";
+const Types = mongoose.Schema.Types;
 
 export enum Role {
   All = "*",
@@ -18,13 +19,13 @@ export enum Role {
 const UserRoleSchema = new Schema(
   {
     name: {
-      type: mongoose.Schema.Types.String,
+      type: Types.String,
       enum: Object.values(Role).filter((role) => role != Role.All),
       unique: true,
       required: true,
     },
     isActive: {
-      type: mongoose.Schema.Types.Boolean,
+      type: Types.Boolean,
       default: true,
       required: true,
     },

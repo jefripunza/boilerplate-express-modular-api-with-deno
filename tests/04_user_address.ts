@@ -8,6 +8,7 @@ import { user_customer_testing } from "../src/config.ts";
 import { isString } from "../src/helpers/validation.ts";
 
 const token_admin = await Deno.readTextFile("tests/token-admin.txt");
+const token_merchant = await Deno.readTextFile("tests/token-merchant.txt");
 const token_customer = await Deno.readTextFile("tests/token-customer.txt");
 
 // ======================================================================== //
@@ -27,7 +28,7 @@ Deno.test(
             full: "Sokowaten, Tamanan, Banguntapan, Bantul, D.I Yogyakarta",
             coordinate: ["123.435435", "33.454354"],
             postcode: "35356",
-            rajaongkir_code: "DTO123",
+            rajaongkirCode: "DTO123",
           },
           {
             headers: { Authorization: `Bearer ${token_customer}` },
@@ -60,7 +61,7 @@ Deno.test(
             full: "Sleman, D.I Yogyakarta",
             coordinate: ["234.45436", "11.454355"],
             postcode: "65654",
-            rajaongkir_code: "YUH456",
+            rajaongkirCode: "YUH456",
           },
           {
             headers: { Authorization: `Bearer ${token_customer}` },
@@ -100,7 +101,7 @@ Deno.test(
         result.data[0].full,
         "Sokowaten, Tamanan, Banguntapan, Bantul, D.I Yogyakarta"
       );
-      assertEquals(result.data[0].rajaongkir_code, "DTO123");
+      assertEquals(result.data[0].rajaongkirCode, "DTO123");
     } catch (error) {
       const { statusCode, message, success, data } = error.response.data;
       console.log({ statusCode, message, success, data });
@@ -119,7 +120,7 @@ Deno.test(
           {
             title: "Test Address Updated",
             full: "Luar Angkasa",
-            rajaongkir_code: "SIP123",
+            rajaongkirCode: "SIP123",
           },
           {
             headers: { Authorization: `Bearer ${token_customer}` },
@@ -151,7 +152,7 @@ Deno.test(
       assertEquals(result.success, true);
       assertEquals(result.data[1].title, "Test Address Updated");
       assertEquals(result.data[1].full, "Luar Angkasa");
-      assertEquals(result.data[1].rajaongkir_code, "SIP123");
+      assertEquals(result.data[1].rajaongkirCode, "SIP123");
     } catch (error) {
       const { statusCode, message, success, data } = error.response.data;
       console.log({ statusCode, message, success, data });

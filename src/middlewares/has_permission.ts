@@ -6,7 +6,7 @@ import * as DTO from "../dto.ts";
 
 import UserModel from "../modules/user/user.model.ts";
 import PermissionModel from "../modules/permission/permission.model.ts";
-import UserPermissionModel from "../modules/user-permission/user-permission.model.ts";
+import UserPermissionModel from "../modules/user/user-permission.model.ts";
 
 export default (permissionName: string) =>
   async (req: any, res: Response, next: NextFunction) => {
