@@ -2,9 +2,10 @@
   "tasks": {
     "install": "deno cache deps.ts",
     "seed": "deno run --allow-read --allow-net --allow-env --allow-sys src/models/seed.ts",
+    "proto": "bash generate-proto.sh",
     "swagger": "deno run -A swagger_exec.ts",
     "dev": "deno run --watch=./src -A index.ts",
-    "test": "clear && deno test -A --trace-ops tests/*.ts",
+    "test": "clear && deno test -A --trace-ops tests/*.test.ts",
     "compile": "deno task test && deno task swagger && deno compile --allow-write --allow-read --allow-net --allow-env --allow-sys --output run index.ts"
   }
 }

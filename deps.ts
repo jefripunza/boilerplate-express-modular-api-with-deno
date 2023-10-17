@@ -1,10 +1,12 @@
 import { assertEquals } from "https://deno.land/std@0.202.0/assert/mod.ts";
 import { delay } from "https://deno.land/std@0.202.0/async/delay.ts";
 
-
 import * as path from "https://deno.land/std@0.202.0/path/mod.ts";
 
 import * as crypto from "https://deno.land/std@0.177.0/node/crypto.ts";
+
+// @deno-types="npm:@types/supertest@2.0.14"
+import request from "npm:supertest@6.3.3";
 
 // ================================================================ //
 
@@ -16,15 +18,10 @@ import cookieParser from "npm:cookie-parser@1.4.6";
 // @deno-types="npm:@types/cors@2.8.13"
 import cors from "npm:cors@2.8.5";
 
-// @deno-types="npm:@types/express@4"
-import express from "npm:express@4.18.2";
-
 // @deno-types="npm:@types/express-fileupload@1.4.1"
 import expressFileupload from "npm:express-fileupload@1.4.0";
 
 import helmet from "npm:helmet@7.0.0";
-
-import httpStatusCode from "npm:http-status-codes@2.2.0";
 
 // @deno-types="npm:@types/jsonwebtoken@9.0.0"
 import jsonwebtoken from "npm:jsonwebtoken@9.0.2";
@@ -54,3 +51,6 @@ import jwt from "npm:jsonwebtoken@9.0.0";
 import uuid from "npm:uuid@9.0.0";
 
 import { z } from "npm:zod@3.22.1";
+
+import { GrpcServer } from "https://deno.land/x/grpc_basic@0.4.7/server.ts";
+import { getClient } from "https://deno.land/x/grpc_basic@0.4.7/client.ts";

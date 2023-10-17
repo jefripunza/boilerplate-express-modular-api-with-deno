@@ -1,10 +1,11 @@
 // deno-lint-ignore-file ban-ts-comment
-// @deno-types="npm:@types/express@4"
-import { Response } from "npm:express@4.18.2";
+
+import { OpineResponse } from "https://deno.land/x/opine@2.3.4/mod.ts";
+import { Status } from "https://deno.land/x/opine@2.3.4/deps.ts";
+
 // @deno-types="npm:@types/uuid@9.0.0"
 import { v4 as uuidv4 } from "npm:uuid@9.0.0";
 
-import { StatusCodes } from "npm:http-status-codes@2.2.0";
 import * as DTO from "../../dto.ts";
 import { Server } from "../../env.ts";
 
@@ -53,14 +54,14 @@ class AuthService {
       });
 
       return DTO.successResponse({
-        statusCode: StatusCodes.CREATED,
+        statusCode: Status.Created,
       });
     } catch (error) {
       return DTO.internalServerErrorResponse("auth.register", error);
     }
   }
 
-  async login(res: Response, username: string, password: string) {
+  async login(res: OpineResponse, username: string, password: string) {
     try {
       const isLogin = await UserModel.findOne({ username })
         .populate("role", {
@@ -109,7 +110,7 @@ class AuthService {
     }
   }
 
-  async logout(res: Response) {
+  async logout(res: OpineResponse) {
     try {
       await RevokeTokenModel.deleteOne({
         jwtid: res.locals.user.jti,

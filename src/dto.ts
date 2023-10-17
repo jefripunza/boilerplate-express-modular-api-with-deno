@@ -1,4 +1,4 @@
-import { StatusCodes } from "npm:http-status-codes@2.2.0";
+import { Status } from "https://deno.land/x/opine@2.3.4/deps.ts";
 
 interface IData {
   [key: string]: any;
@@ -37,7 +37,7 @@ export const successResponse = (response: ISuccessResponse): ISuccess => {
     new_response.message = "OK";
   }
   if (typeof new_response?.statusCode == "undefined") {
-    new_response.statusCode = StatusCodes.OK;
+    new_response.statusCode = Status.OK;
   }
   if (typeof new_response?.success == "undefined") {
     new_response.success = true;
@@ -66,7 +66,7 @@ export const errorResponse = (response: IErrorResponse): IError => {
     new_response.message = "ERROR";
   }
   if (typeof new_response?.statusCode == "undefined") {
-    new_response.statusCode = StatusCodes.BAD_REQUEST;
+    new_response.statusCode = Status.BadRequest;
   }
   if (typeof new_response?.success == "undefined") {
     new_response.success = false;
@@ -78,16 +78,16 @@ export const errorResponse = (response: IErrorResponse): IError => {
 //-> Custom Response
 
 export const notFoundResponse = (message = "Not Found") => {
-  return errorResponse({ message, statusCode: StatusCodes.NOT_FOUND });
+  return errorResponse({ message, statusCode: Status.NotFound });
 };
 export const notAuthorizedResponse = (message = "Not Authorized") => {
-  return errorResponse({ message, statusCode: StatusCodes.UNAUTHORIZED });
+  return errorResponse({ message, statusCode: Status.Unauthorized });
 };
 
 export const internalServerErrorResponse = (from: string, error: Error) => {
   console.error(`${from} : ${error.message}\n${error.stack}`);
   return errorResponse({
     message: "internal server error",
-    statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
+    statusCode: Status.InternalServerError,
   });
 };

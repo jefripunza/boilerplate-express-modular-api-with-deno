@@ -1,13 +1,15 @@
-// @deno-types="npm:@types/express@4"
-import { Request, Response } from "npm:express@4.18.2";
-import { IRequestJoin } from "../../contracts/request.contract.ts";
+import {
+  OpineRequest,
+  OpineResponse,
+} from "https://deno.land/x/opine@2.3.4/mod.ts";
+import { Status } from "https://deno.land/x/opine@2.3.4/deps.ts";
 
 import * as Schema from "./user.schema.ts";
 import Service from "./user.service.ts";
 
 import { ITokenContent } from "../../contracts/request.contract.ts";
 
-export const init = async (req: Request, res: Response) => {
+export const init = async (_req: OpineRequest, res: OpineResponse) => {
   /**
     #swagger.tags = ['User']
   */
@@ -16,10 +18,10 @@ export const init = async (req: Request, res: Response) => {
 
   const response = await Service.init(id);
 
-  return res.status(response.statusCode).json(response);
+  return res.setStatus(response.statusCode).json(response);
 };
 
-export const updateUser = async (req: Request, res: Response) => {
+export const updateUser = async (req: OpineRequest, res: OpineResponse) => {
   /**
     #swagger.tags = ['User']
   */
@@ -29,10 +31,13 @@ export const updateUser = async (req: Request, res: Response) => {
 
   const response = await Service.updateUser(id, name, profile_image);
 
-  return res.status(response.statusCode).json(response);
+  return res.setStatus(response.statusCode).json(response);
 };
 
-export const createUserAddress = async (req: Request, res: Response) => {
+export const createUserAddress = async (
+  req: OpineRequest,
+  res: OpineResponse
+) => {
   /**
     #swagger.tags = ['User Address']
   */
@@ -50,10 +55,13 @@ export const createUserAddress = async (req: Request, res: Response) => {
     rajaongkirCode
   );
 
-  return res.status(response.statusCode).json(response);
+  return res.setStatus(response.statusCode).json(response);
 };
 
-export const listUserAddress = async (req: Request, res: Response) => {
+export const listUserAddress = async (
+  req: OpineRequest,
+  res: OpineResponse
+) => {
   /**
     #swagger.tags = ['User Address']
   */
@@ -62,10 +70,13 @@ export const listUserAddress = async (req: Request, res: Response) => {
 
   const response = await Service.listUserAddress(id);
 
-  return res.status(response.statusCode).json(response);
+  return res.setStatus(response.statusCode).json(response);
 };
 
-export const updateUserAddress = async (req: Request, res: Response) => {
+export const updateUserAddress = async (
+  req: OpineRequest,
+  res: OpineResponse
+) => {
   /**
     #swagger.tags = ['User Address']
   */
@@ -85,10 +96,13 @@ export const updateUserAddress = async (req: Request, res: Response) => {
     rajaongkirCode
   );
 
-  return res.status(response.statusCode).json(response);
+  return res.setStatus(response.statusCode).json(response);
 };
 
-export const setDefaultUserAddress = async (req: Request, res: Response) => {
+export const setDefaultUserAddress = async (
+  req: OpineRequest,
+  res: OpineResponse
+) => {
   /**
     #swagger.tags = ['User Address']
   */
@@ -98,10 +112,13 @@ export const setDefaultUserAddress = async (req: Request, res: Response) => {
 
   const response = await Service.setDefaultUserAddress(id, addressId);
 
-  return res.status(response.statusCode).json(response);
+  return res.setStatus(response.statusCode).json(response);
 };
 
-export const deleteUserAddress = async (req: Request, res: Response) => {
+export const deleteUserAddress = async (
+  req: OpineRequest,
+  res: OpineResponse
+) => {
   /**
     #swagger.tags = ['User Address']
   */
@@ -111,5 +128,5 @@ export const deleteUserAddress = async (req: Request, res: Response) => {
 
   const response = await Service.deleteUserAddress(id, addressId);
 
-  return res.status(response.statusCode).json(response);
+  return res.setStatus(response.statusCode).json(response);
 };

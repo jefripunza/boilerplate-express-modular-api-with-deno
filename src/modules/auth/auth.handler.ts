@@ -1,11 +1,12 @@
-// @deno-types="npm:@types/express@4"
-import { Request, Response } from "npm:express@4.18.2";
-import { IRequestJoin } from "../../contracts/request.contract.ts";
+import {
+  OpineRequest,
+  OpineResponse,
+} from "https://deno.land/x/opine@2.3.4/mod.ts";
 
 import * as Schema from "./auth.schema.ts";
 import Service from "./auth.service.ts";
 
-export const register = async (req: Request, res: Response) => {
+export const register = async (req: OpineRequest, res: OpineResponse) => {
   /**
     #swagger.tags = ['Auth']
   */
@@ -19,10 +20,10 @@ export const register = async (req: Request, res: Response) => {
     profile_image
   );
 
-  return res.status(response.statusCode).json(response);
+  return res.setStatus(response.statusCode).json(response);
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: OpineRequest, res: OpineResponse) => {
   /**
     #swagger.tags = ['Auth']
   */
@@ -31,10 +32,10 @@ export const login = async (req: Request, res: Response) => {
 
   const response = await Service.login(res, username, password);
 
-  return res.status(response.statusCode).json(response);
+  return res.setStatus(response.statusCode).json(response);
 };
 
-export const logout = async (_: Request, res: Response) => {
+export const logout = async (_: OpineRequest, res: OpineResponse) => {
   /**
     #swagger.tags = ['Auth']
     #swagger.security = [{ "Bearer": [] }]
@@ -43,10 +44,10 @@ export const logout = async (_: Request, res: Response) => {
 
   const response = await Service.logout(res);
 
-  return res.status(response.statusCode).json(response);
+  return res.setStatus(response.statusCode).json(response);
 };
 
-export const tokenValidation = async (_: Request, res: Response) => {
+export const tokenValidation = async (_: OpineRequest, res: OpineResponse) => {
   /**
     #swagger.tags = ['Auth']
     #swagger.security = [{ "Bearer": [] }]
@@ -57,10 +58,13 @@ export const tokenValidation = async (_: Request, res: Response) => {
 
   const response = await Service.tokenValidation(token);
 
-  return res.status(response.statusCode).json(response);
+  return res.setStatus(response.statusCode).json(response);
 };
 
-export const requestResetPassword = async (req: Request, res: Response) => {
+export const requestResetPassword = async (
+  req: OpineRequest,
+  res: OpineResponse
+) => {
   /**
     #swagger.tags = ['Auth']
   */
@@ -69,10 +73,13 @@ export const requestResetPassword = async (req: Request, res: Response) => {
 
   const response = await Service.requestResetPassword(username);
 
-  return res.status(response.statusCode).json(response);
+  return res.setStatus(response.statusCode).json(response);
 };
 
-export const submitResetPassword = async (req: Request, res: Response) => {
+export const submitResetPassword = async (
+  req: OpineRequest,
+  res: OpineResponse
+) => {
   /**
     #swagger.tags = ['Auth']
   */
@@ -86,5 +93,5 @@ export const submitResetPassword = async (req: Request, res: Response) => {
     rePassword
   );
 
-  return res.status(response.statusCode).json(response);
+  return res.setStatus(response.statusCode).json(response);
 };

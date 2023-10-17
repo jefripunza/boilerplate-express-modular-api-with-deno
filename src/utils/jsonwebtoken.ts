@@ -1,4 +1,5 @@
-import { StatusCodes } from "npm:http-status-codes@2.2.0";
+import { Status } from "https://deno.land/x/opine@2.3.4/deps.ts";
+
 // @deno-types="npm:@types/jsonwebtoken@9.0.2"
 import jwt from "npm:jsonwebtoken@9.0.0";
 // @deno-types="npm:@types/uuid@9.0.0"
@@ -44,7 +45,7 @@ export const verifyToken = async (token: string): Promise<IVerifyToken> => {
     jwt.verify(token, Jwt.SECRET_TOKEN, (err, data: any) => {
       if (err) {
         resolve({
-          error: StatusCodes.UNAUTHORIZED,
+          error: Status.Unauthorized,
           message: "Not Authorized",
           data,
         });

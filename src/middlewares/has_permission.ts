@@ -1,6 +1,9 @@
-// @deno-types="npm:@types/express@4"
-import { NextFunction, Request, Response } from "npm:express@4.18.2";
-import { StatusCodes } from "npm:http-status-codes@2.2.0";
+import {
+  NextFunction,
+  OpineRequest,
+  OpineResponse,
+} from "https://deno.land/x/opine@2.3.4/mod.ts";
+import { Status } from "https://deno.land/x/opine@2.3.4/deps.ts";
 
 import * as DTO from "../dto.ts";
 
@@ -9,7 +12,7 @@ import PermissionModel from "../modules/permission/permission.model.ts";
 import UserPermissionModel from "../modules/user/user-permission.model.ts";
 
 export default (permissionName: string) =>
-  async (req: any, res: Response, next: NextFunction) => {
+  async (_req: OpineRequest, res: OpineResponse, next: NextFunction) => {
     const { id } = res.locals.user;
 
     const user = await UserModel.findOne(
@@ -30,9 +33,9 @@ export default (permissionName: string) =>
     });
 
     const message = "user not permission on this feature";
-    const code = StatusCodes.UNAUTHORIZED;
+    const code = Status.Unauthorized;
     if (!user_permission) {
-      return res.status(code).json(
+      return res.setStatus(code).json(
         DTO.errorResponse({
           message,
           statusCode: code,
@@ -40,7 +43,7 @@ export default (permissionName: string) =>
       );
     } else {
       if (!user_permission.canAccess) {
-        return res.status(code).json(
+        return res.setStatus(code).json(
           DTO.errorResponse({
             message,
             statusCode: code,

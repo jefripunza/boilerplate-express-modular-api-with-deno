@@ -1,5 +1,4 @@
-// @deno-types="npm:@types/express@4"
-import { Router } from "npm:express@4.18.2";
+import { Router } from "https://deno.land/x/opine@2.3.4/mod.ts";
 
 const router = Router();
 

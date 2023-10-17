@@ -1,9 +1,14 @@
-// @deno-types="npm:@types/express@4"
-import { Request, Response } from "npm:express@4.18.2";
+import {
+  OpineRequest,
+  OpineResponse,
+} from "https://deno.land/x/opine@2.3.4/mod.ts";
 
 import Service from "./unit-testing.service.ts";
 
-export const clearWithUsername = async (req: Request, res: Response) => {
+export const clearWithUsername = async (
+  req: OpineRequest,
+  res: OpineResponse
+) => {
   /**
     #swagger.tags = ['Unit Testing']
     #swagger.deprecated = true
@@ -13,5 +18,5 @@ export const clearWithUsername = async (req: Request, res: Response) => {
 
   const response = await Service.clearWithUsername(username);
 
-  return res.status(response.statusCode).json(response);
+  return res.setStatus(response.statusCode).json(response);
 };

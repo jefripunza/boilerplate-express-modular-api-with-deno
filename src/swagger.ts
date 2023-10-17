@@ -1,11 +1,11 @@
-// @deno-types="npm:@types/express@4"
-import { Application } from "npm:express@4.18.2";
+import { Application } from "https://deno.land/x/opine@2.3.4/mod.ts";
+
 import SwagInit from "npm:swagger-autogen@2.23.1";
 
 import { Swagger } from "./env.ts";
 import { modules_dir, swagger_json_file, app_file } from "./path.ts";
 
-import { StatusCodes } from "npm:http-status-codes@2.2.0";
+import { Status } from "https://deno.land/x/opine@2.3.4/deps.ts";
 
 import {
   swagger_html,
@@ -89,6 +89,6 @@ export const route = async (app: Application) => {
     if (file == "swagger-ui-bundle.js") return res.send(swagger_ui_bundle_js);
     if (file == "swagger-ui-standalone-preset.js")
       return res.send(swagger_ui_standalone_preset_js);
-    return res.status(StatusCodes.NOT_FOUND).send("not found...");
+    return res.setStatus(Status.NotFound).send("not found...");
   });
 };

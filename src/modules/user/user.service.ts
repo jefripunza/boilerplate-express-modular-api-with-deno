@@ -1,7 +1,10 @@
-// @deno-types="npm:@types/express@4"
-import { Response } from "npm:express@4.18.2";
+import {
+  NextFunction,
+  OpineRequest,
+  OpineResponse,
+} from "https://deno.land/x/opine@2.3.4/mod.ts";
+import { Status } from "https://deno.land/x/opine@2.3.4/deps.ts";
 
-import { StatusCodes } from "npm:http-status-codes@2.2.0";
 import * as DTO from "../../dto.ts";
 
 import UserModel, { User } from "../user/user.model.ts";
@@ -91,7 +94,7 @@ class UserService {
 
       return DTO.successResponse({
         message: "success create new address",
-        statusCode: StatusCodes.CREATED,
+        statusCode: Status.Created,
         data: {
           id,
         },
@@ -264,7 +267,7 @@ class UserService {
 
       return DTO.successResponse({
         message: "berhasil menghapus alamat",
-        statusCode: StatusCodes.OK,
+        statusCode: Status.NoContent,
       });
     } catch (error) {
       return DTO.internalServerErrorResponse("user.deleteUserAddress", error);

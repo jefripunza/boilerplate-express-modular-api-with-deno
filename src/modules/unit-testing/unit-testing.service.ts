@@ -1,4 +1,4 @@
-import { StatusCodes } from "npm:http-status-codes@2.2.0";
+import { Status } from "https://deno.land/x/opine@2.3.4/deps.ts";
 import * as DTO from "../../dto.ts";
 
 import UserModel from "../user/user.model.ts";
@@ -38,7 +38,7 @@ class UnitTestingService {
       });
 
       return DTO.successResponse({
-        statusCode: StatusCodes.NO_CONTENT,
+        statusCode: Status.NoContent,
         message: "success clear with username!",
       });
     } catch (error) {
