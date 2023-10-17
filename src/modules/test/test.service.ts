@@ -10,7 +10,7 @@ import { Status } from "https://deno.land/x/opine@2.3.4/deps.ts";
 import * as DTO from "../../dto.ts";
 
 import { getClient } from "https://deno.land/x/grpc_basic@0.4.7/client.ts";
-import { Greeter } from "./greeter.d.ts";
+import { Greeter } from "../../../proto/greeter.d.ts";
 
 const protoGreeterPath = new URL(
   "../../../proto/greeter.proto",

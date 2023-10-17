@@ -12,10 +12,10 @@ export interface News {
   postImage?: string;
 }
 
-export interface Empty {
-
-}
-
 export interface NewsList {
   news?: News[];
+}
+
+export interface Empty {
+
 }

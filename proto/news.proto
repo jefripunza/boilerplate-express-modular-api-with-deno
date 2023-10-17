@@ -7,12 +7,12 @@ message News {
   string postImage = 4;
 }
 
-service NewsService {
-  rpc GetAllNews (Empty) returns (NewsList) {}
+message NewsList {
+  repeated News news = 1;
 }
 
 message Empty {}
 
-message NewsList {
-  repeated News news = 1;
+service NewsService {
+  rpc GetAllNews (Empty) returns (NewsList) {}
 }
